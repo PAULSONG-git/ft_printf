@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 11:48:31 by psong             #+#    #+#             */
-/*   Updated: 2021/03/09 16:41:49 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/10 19:41:11 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ int		main(void)
 {
 	int ret;
 
-	ft_printf("option: [0][-][width][.prec] \n");
-	ret = ft_printf("Hello \n");
+	ret = ft_printf("Hello %-0*.5d\n", 10, 1234);
 	printf("ret is : %d \n", ret);
 	return (0);
 }
