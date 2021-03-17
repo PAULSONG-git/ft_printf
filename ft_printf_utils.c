@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:09:30 by psong             #+#    #+#             */
-/*   Updated: 2021/03/16 16:57:37 by paul             ###   ########.fr       */
+/*   Updated: 2021/03/17 15:22:31 by psong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	info_init(t_info *info)
 	info->total = 0;
 	info->negative = 0;
 	info->p = 0;
-	info->x = 0;
 	info->unsgnd_nbr = 0;
 }
 
@@ -156,22 +155,16 @@ int		u_print_by_info(t_info *info, va_list ap)
 		if ((info->fill_prec = info->prec - info->posi_nb) < 0)
 			info->fill_prec = 0;
 	}
-	if (info->negative == 1 && info->zero == 1 && info->fill_blank)
-	{
-		total += ft_putchar('-', 1);
-		info->negative = 0;
-	}
 	if (info->minus == 0)
 		total += print_blank(info->zero, info->fill_blank);
-	if (info->negative == 1)
-		total += ft_putchar('-', 1);
 	if (info->fill_prec)
 		total += print_blank(1, info->fill_prec);
-	if (!(info->nbr == 0 && info->prec == 0 && info->dot == 1))
-		ft_putnbr_fd(info->unsgnd_nbr, 1);
+	if (!(info->unsgnd_nbr == 0 && info->prec == 0 && info->dot == 1))
+		ft_putnbr_b(info->unsgnd_nbr);
 	if (info->minus == 1)
 		total += print_blank(0, info->fill_blank);
-	return (total);
+	
+	return (total + info->posi_nb);
 }
 
 int		s_print_by_info(t_info *info, va_list ap)
@@ -242,33 +235,6 @@ int		ft_putnbr_count(long long nbr, char *base)
 	return (i);
 }
 
-/* int		ft_putnbr_count2(unsigned int nbr, char *base)
-{
-	unsigned int	nbr_l;
-	char	nbr_c[32];
-	unsigned int		base_divider;
-	unsigned int		i;
-
-	base_divider = ft_strlen(base);
-	if (nbr < 0)
-	{
-		nbr_l = nbr;
-		nbr_l = -nbr_l;
-		ft_putchar('-', 1);
-	}
-	else
-		nbr_l = nbr;
-	i = 0;
-	while (nbr_l > 0)
-	{
-		nbr_c[i] = base[nbr_l % base_divider];
-		nbr_l /= base_divider;
-		i++;
-	}
-	return (i);
-}
-*/
-
 int		p_print_by_info(t_info *info, va_list ap)
 {
 	int total;
@@ -296,16 +262,6 @@ int		p_print_by_info(t_info *info, va_list ap)
 	if (info->minus == 1)
 		total += print_blank(0, info->fill_blank);
 
-/*	printf("\n");
-	printf("minus : %d\n", info->minus);
-	printf("zero : %d\n", info->zero);
-	printf("width : %d\n", info->width);
-	printf("dot : %d\n", info->dot);
-	printf("prec : %d\n", info->prec);
-	printf("fill_blank : %d\n", info->fill_blank);
-	printf("str_cnt : %d\n", info->str_cnt);
-	printf("\n");
-*/
 	total = total + 2 + info->total;
 	return (total);
 }
@@ -315,21 +271,93 @@ int		x_print_by_info(t_info *info, va_list ap)
 	int total;
 	
 	total = 0;
-	info->x = va_arg(ap, unsigned int);
-	if ((info->total = ft_putnbr_count(info->x, "0123456789abcdef")) > 7)
+	info->unsgnd_nbr = va_arg(ap, unsigned int);
+	if (!(info->posi_nb = ft_putnbr_count(info->unsgnd_nbr, "0123456789abcdef")))
+		positional_unsgnd_nb(info);
+	if (info->zero && info->minus)
+		info->zero = 0;
+	if (info->zero && info->dot)
+		info->zero = 0;
+	if (info->width > info->prec)
+	{
+		if (info->prec > info->posi_nb)
+		{	
+			info->fill_blank = (info->width - info->prec);
+			info->fill_prec = (info->prec - info->posi_nb);
+		}
+		else if (info->prec <= info->posi_nb)
+		{
+			info->fill_blank = info->width - info->posi_nb;
+			info->fill_prec = 0;
+		}
+	}
+	else if (info->width <= info->prec)
+	{
 		info->fill_blank = 0;
+		if ((info->fill_prec = info->prec - info->posi_nb) < 0)
+			info->fill_prec = 0;
+	}
 	if (info->minus == 0)
 		total += print_blank(info->zero, info->fill_blank);
 	if (info->fill_prec)
 		total += print_blank(1, info->fill_prec);
-	ft_putnbr_base(info->x, "0123456789abcdef");
+	if (!(info->unsgnd_nbr == 0 && info->prec == 0 && info->dot == 1))
+	{
+		if (info->unsgnd_nbr == 0)
+			ft_putchar('0', 1);
+		ft_putnbr_base(info->unsgnd_nbr, "0123456789abcdef");
+	}
 	if (info->minus == 1)
 		total += print_blank(0, info->fill_blank);
-	
-	total = total + info->total;
-	return (total);
+	return (total + info->posi_nb);
 }
 
+int		X_print_by_info(t_info *info, va_list ap)
+{
+	int total;
+	
+	total = 0;
+	info->unsgnd_nbr = va_arg(ap, unsigned int);
+	if (!(info->posi_nb = ft_putnbr_count(info->unsgnd_nbr, "0123456789ABCDEF")))
+		positional_unsgnd_nb(info);
+	if (info->zero && info->minus)
+		info->zero = 0;
+	if (info->zero && info->dot)
+		info->zero = 0;
+	if (info->width > info->prec)
+	{
+		if (info->prec > info->posi_nb)
+		{	
+			info->fill_blank = (info->width - info->prec);
+			info->fill_prec = (info->prec - info->posi_nb);
+		}
+		else if (info->prec <= info->posi_nb)
+		{
+			info->fill_blank = info->width - info->posi_nb;
+			info->fill_prec = 0;
+		}
+	}
+	else if (info->width <= info->prec)
+	{
+		info->fill_blank = 0;
+		if ((info->fill_prec = info->prec - info->posi_nb) < 0)
+			info->fill_prec = 0;
+	}
+	if (info->minus == 0)
+		total += print_blank(info->zero, info->fill_blank);
+	if (info->fill_prec)
+		total += print_blank(1, info->fill_prec);
+	if (!(info->unsgnd_nbr == 0 && info->prec == 0 && info->dot == 1))
+	{
+		if (info->unsgnd_nbr == 0)
+			ft_putchar('0', 1);
+		ft_putnbr_base(info->unsgnd_nbr, "0123456789ABCDEF");
+	}
+	if (info->minus == 1)
+		total += print_blank(0, info->fill_blank);
+	return (total + info->posi_nb);
+}
+	
 int		ft_check_base(char *base)
 {
 	int		i;
@@ -403,6 +431,13 @@ void	ft_putnbr_fd(int nb, int fd)
 	if (nbr >= 10)
 		ft_putnbr_fd(nbr / 10, fd);
 	ft_putchar((char)(nbr % 10 + '0'), fd);
+}
+
+void	ft_putnbr_b(unsigned int nb)
+{
+	if (nb >= 10)
+		ft_putnbr_b(nb / 10);
+	ft_putchar((char)(nb % 10 + '0'), 1);
 }
 
 int		print_blank(int zero_flag, int count)

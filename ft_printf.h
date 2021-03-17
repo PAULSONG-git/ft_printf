@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:08:49 by psong             #+#    #+#             */
-/*   Updated: 2021/03/16 16:33:23 by paul             ###   ########.fr       */
+/*   Updated: 2021/03/17 14:41:54 by psong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_info
 	int			total;
 	int			negative;
 	long long	p;
-	unsigned int x;
 	unsigned int	unsgnd_nbr;
 }				t_info;
 
@@ -48,7 +47,10 @@ int		c_print_by_info(t_info *info, va_list ap);
 int		d_print_by_info(t_info *info, va_list ap);
 int		u_print_by_info(t_info *info, va_list ap);
 int		s_print_by_info(t_info *info, va_list ap);
+int		x_print_by_info(t_info *info, va_list ap);
+int		X_print_by_info(t_info *info, va_list ap);
 void	ft_putnbr_fd(int nb, int fd);
+void	ft_putnbr_b(unsigned int nb);
 int		ft_putchar(char c, int fd);
 int		print_blank(int zero_flag, int count);
 void	positional_nb(t_info *info);
