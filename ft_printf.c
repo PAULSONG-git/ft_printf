@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:07:39 by psong             #+#    #+#             */
-/*   Updated: 2021/03/17 14:42:09 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/17 15:45:07 by psong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int				print_by_type(va_list ap, t_info *info, int i, char *format)
 		total = x_print_by_info(info, ap);
 	else if (c == 'X')
 		total = X_print_by_info(info, ap);
+	else if (c == '%')
+		total = pc_print_by_info(info);
 	return (total);
 }
 
@@ -95,7 +97,7 @@ int		read_format(va_list ap, char *format)
 		}
 		if (format[i] == '%' && format[i + 1] != '\0')
 			i++;
-		while ((format[i] != 'd' && format[i] != 'u' && format[i] != 'x' && format[i] != 'X' && format[i] != 'p' && format[i] != 'i' &&  format[i] != 's' && format[i] != 'c') && format[i])
+		while ((format[i] != 'd' && format[i] != 'u' && format[i] != 'x' && format[i] != 'X' && format[i] != 'p' && format[i] != 'i' &&  format[i] != 's' && format[i] != 'c' && format[i] != '%') && format[i])
 		{
 			fill_info(ap, info, format, i);
 			i++;

@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:09:30 by psong             #+#    #+#             */
-/*   Updated: 2021/03/17 15:22:31 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/17 15:50:00 by psong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,34 @@ int		c_print_by_info(t_info *info, va_list ap)
 	ft_putchar(info->chr, 1);
 	if (info->minus == 1)
 		print_blank(0, info->fill_blank);
+	info->total = info->fill_blank + 1;
+/*
+	printf("\n");
+	printf("minus : %d\n", info->minus);
+	printf("zero : %d\n", info->zero);
+	printf("width : %d\n", info->width);
+	printf("dot : %d\n", info->dot);
+	printf("prec : %d\n", info->prec);
+	printf("posi_nb : %d\n", info->posi_nb);
+	printf("fill_blank : %d\n", info->fill_blank);
+	printf("fill_prec : %d\n", info->fill_prec);
+	printf("total : %d\n", info->total);
+	printf("\n");
+*/
+	return (info->total);
+}
+
+int		pc_print_by_info(t_info *info)
+{
+	if (info->zero && info->minus)
+		info->zero = 0;
+	if (info->width > 0)
+		info->fill_blank = (info->width - 1);
+	if (info->minus == 0)
+		print_blank(info->zero, info->fill_blank);
+	ft_putchar('%', 1);
+	if (info->minus == 1)
+		print_blank(info->zero, info->fill_blank);
 	info->total = info->fill_blank + 1;
 /*
 	printf("\n");

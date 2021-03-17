@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:08:49 by psong             #+#    #+#             */
-/*   Updated: 2021/03/17 14:41:54 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/17 15:44:56 by psong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int		u_print_by_info(t_info *info, va_list ap);
 int		s_print_by_info(t_info *info, va_list ap);
 int		x_print_by_info(t_info *info, va_list ap);
 int		X_print_by_info(t_info *info, va_list ap);
+int		pc_print_by_info(t_info *info);
 void	ft_putnbr_fd(int nb, int fd);
 void	ft_putnbr_b(unsigned int nb);
 int		ft_putchar(char c, int fd);
