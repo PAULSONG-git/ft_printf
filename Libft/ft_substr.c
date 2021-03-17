@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/05 11:48:31 by psong             #+#    #+#             */
-/*   Updated: 2021/03/16 14:57:19 by paul             ###   ########.fr       */
+/*   Created: 2021/01/22 13:53:50 by psong             #+#    #+#             */
+/*   Updated: 2021/02/01 16:23:28 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
+#include <stdlib.h>
 
-int		main(void)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	int a = 0;
-	int b = 0;
-	long long c1 = 0x93b1402710;
-	void *c2 = (void *)c1;
-	a = ft_printf("%-16.p\n", c1);
-	b = printf("%-16.p\n", c2);
-	printf("%d\n", a);
-	printf("%d\n", b);
+	char	*dst;
+	size_t	size;
 
-	return (0);
+	if (s == 0)
+		return (NULL);
+	if (!(dst = (char *)malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	size = ft_strlen(s);
+	if (size <= start)
+	{
+		dst[0] = '\0';
+		return (dst);
+	}
+	ft_strlcpy(dst, s + start, len + 1);
+	return (dst);
 }

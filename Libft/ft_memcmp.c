@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/05 11:48:31 by psong             #+#    #+#             */
-/*   Updated: 2021/03/16 14:57:19 by paul             ###   ########.fr       */
+/*   Created: 2021/01/22 11:34:48 by psong             #+#    #+#             */
+/*   Updated: 2021/02/01 15:49:38 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
 
-int		main(void)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int a = 0;
-	int b = 0;
-	long long c1 = 0x93b1402710;
-	void *c2 = (void *)c1;
-	a = ft_printf("%-16.p\n", c1);
-	b = printf("%-16.p\n", c2);
-	printf("%d\n", a);
-	printf("%d\n", b);
+	size_t	i;
 
-	return (0);
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (((unsigned char *)s1)[i] == ((unsigned char *)s2)[i] && i < n - 1)
+		i++;
+	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 }

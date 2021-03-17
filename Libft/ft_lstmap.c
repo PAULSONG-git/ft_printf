@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/05 11:48:31 by psong             #+#    #+#             */
-/*   Updated: 2021/03/16 14:57:19 by paul             ###   ########.fr       */
+/*   Created: 2021/01/22 19:26:40 by psong             #+#    #+#             */
+/*   Updated: 2021/01/28 19:35:41 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
+#include <stdlib.h>
 
-int		main(void)
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	int a = 0;
-	int b = 0;
-	long long c1 = 0x93b1402710;
-	void *c2 = (void *)c1;
-	a = ft_printf("%-16.p\n", c1);
-	b = printf("%-16.p\n", c2);
-	printf("%d\n", a);
-	printf("%d\n", b);
+	t_list	*map;
 
-	return (0);
+	if (!lst || !f)
+		return (NULL);
+	if (!((map = ft_lstnew(f(lst->content)))))
+	{
+		ft_lstclear(&map, del);
+		return (NULL);
+	}
+	map->next = ft_lstmap(lst->next, f, del);
+	return (map);
 }

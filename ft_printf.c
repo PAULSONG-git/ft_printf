@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:07:39 by psong             #+#    #+#             */
-/*   Updated: 2021/03/10 19:16:38 by paul             ###   ########.fr       */
+/*   Updated: 2021/03/16 16:46:41 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,16 @@ int				print_by_type(va_list ap, t_info *info, int i, char *format)
 
 	total = 0;
 	c = format[i];
-    if (c == 'i')
-		print_by_info(info, ap);
-	else if (c == 'd')
-		print_by_info(info, ap);
+    if (c == 'c')
+		total = c_print_by_info(info, ap);
+	else if	(c == 'd' || c == 'i')
+		total = d_print_by_info(info, ap);
+	else if (c == 's')
+		total = s_print_by_info(info, ap);
+	else if (c == 'p')
+		total = p_print_by_info(info, ap);
+	else if (c == 'u')
+		total = u_print_by_info(info, ap);
 	return (total);
 }
 
@@ -30,7 +36,7 @@ void	fill_info(va_list ap, t_info *info, char *format, int i)
 {
 	if (format[i] == '-')
 		info->minus = 1;
-	else if (format[i] == '0' && info->dot == 0)
+	else if (format[i] == '0' && info->dot == 0 && info->width == 0)
 		info->zero = 1;
 	else if (format[i] == '.')
 		info->dot = 1;
@@ -39,7 +45,7 @@ void	fill_info(va_list ap, t_info *info, char *format, int i)
 		if (('0' <= format[i] && format[i] <= '9') && info->dot == 1)
 			info->prec = 10 * info->prec + (format[i] - 48);
 		else if (('0' <= format[i] && format[i] <= '9') && info->dot == 0)
-			info->width = 10 * info->width + (format[i] - 48);
+			info->width = 10 * info->width + format[i] - 48;
 	}	
 	else if (format[i] == '*')
 	{
@@ -85,7 +91,7 @@ int		read_format(va_list ap, char *format)
 		}
 		if (format[i] == '%' && format[i + 1] != '\0')
 			i++;
-		while ((format[i] != 'd' &&  format[i] != 's') && format[i])
+		while ((format[i] != 'd' && format[i] != 'u' && format[i] != 'x' && format[i] != 'p' && format[i] != 'i' &&  format[i] != 's' && format[i] != 'c') && format[i])
 		{
 			fill_info(ap, info, format, i);
 			i++;
@@ -96,6 +102,8 @@ int		read_format(va_list ap, char *format)
 			i++;
 		}
 	}
+	free(info->str);
+	info->str = 0;
 	free(info);
 	info = 0;
 	return (ret);
