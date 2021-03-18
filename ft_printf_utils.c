@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:09:30 by psong             #+#    #+#             */
-/*   Updated: 2021/03/17 15:50:00 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/18 20:17:04 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		d_print_by_info(t_info *info, va_list ap)
 	{	
 		info->negative = 1;
 		info->width = info->width - 1;
-		info->nbr = info->nbr * -1;
+//		info->nbr = info->nbr * -1;
 	}
 	positional_nb(info);
 	if (info->zero && info->minus)
@@ -270,27 +270,27 @@ int		p_print_by_info(t_info *info, va_list ap)
 	total = 0;
 	info->p = va_arg(ap, long long);
 	if (info->p == 0 && info->dot == 1)
-		info->fill_blank = info->width -2;
-	else if (info->p == 0 && info->dot == 0)
-		info->fill_blank = info->width -3;
-	else if ((info->total = ft_putnbr_count(info->p, "0123456789abcdef")) > 11)
-		info->fill_blank = (info->width - 14);
-	else
-		info->fill_blank = (info->width - 12);
+		info->width += 1;
+	if ((info->total = ft_putnbr_count(info->p, "0123456789abcdef")) == 0)
+		info->total = 1;
+	info->fill_blank = info->width - 2 - info->total;
 	if (info->minus == 0)
 		total += print_blank(info->zero, info->fill_blank);
 	ft_putstr("0x", 1);
 	if (info->p == 0 && info->dot == 0)
-	{	
 		ft_putchar('0', 1);
-		total += 1;
-	}
 	else
 		ft_putnbr_base(info->p, "0123456789abcdef");
 	if (info->minus == 1)
 		total += print_blank(0, info->fill_blank);
 
-	total = total + 2 + info->total;
+	total = 2 + total + info->total;
+/*	printf("\n");
+	printf("total : %d\n", total);
+	printf("fill_blank : %d\n", info->fill_blank);
+	printf("info->total : %d\n", info->total);
+	printf("info->width : %d\n", info->width);
+*/
 	return (total);
 }
 
@@ -451,7 +451,7 @@ void	ft_putnbr_fd(int nb, int fd)
 
 	if (nb < 0)
 	{
-		ft_putchar('-', fd);
+//		ft_putchar('-', fd);
 		nbr = (nb * -1);
 	}
 	else
