@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:08:49 by psong             #+#    #+#             */
-/*   Updated: 2021/03/17 15:44:56 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/19 16:06:59 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
+//# include "./Libft/libft.h"
 
 typedef struct s_info
 {
@@ -63,4 +64,5 @@ void	ft_putnbr_base(long long nbr, char *base);
 int		ft_putnbr_count(long long nbr, char *base);
 int		ft_check_base(char *base);
 int		p_print_by_info(t_info *info, va_list ap);
+int					ft_strncmp(const char *s1, const char *s2, size_t n);
 #endif

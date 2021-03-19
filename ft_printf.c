@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:07:39 by psong             #+#    #+#             */
-/*   Updated: 2021/03/17 15:45:07 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/19 17:06:34 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int		read_format(va_list ap, char *format)
 
 	i = 0;
 	ret = 0;
+	if (format[i] == '\0')
+		return (0);
 	if (!(info = (t_info *)malloc(sizeof(t_info))))
 		return (-1);
 	while (format[i])
@@ -112,6 +114,8 @@ int		read_format(va_list ap, char *format)
 	info->str = 0;
 	free(info);
 	info = 0;
+//	if (!(ft_strncmp(format, "(null)", 6)))
+//		return (0);
 	return (ret);
 }
 

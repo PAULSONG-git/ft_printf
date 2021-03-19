@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:09:30 by psong             #+#    #+#             */
-/*   Updated: 2021/03/18 20:17:04 by paul             ###   ########.fr       */
+/*   Updated: 2021/03/19 16:07:40 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int		c_print_by_info(t_info *info, va_list ap)
 		info->fill_blank = (info->width - 1);
 	if (info->minus == 0)
 		print_blank(0, info->fill_blank);
+	if ((info->fill_prec = info->prec - 1) > 0)
+		print_blank(1, info->fill_prec);
 	ft_putchar(info->chr, 1);
 	if (info->minus == 1)
 		print_blank(0, info->fill_blank);
@@ -269,14 +271,14 @@ int		p_print_by_info(t_info *info, va_list ap)
 	
 	total = 0;
 	info->p = va_arg(ap, long long);
-	if (info->p == 0 && info->dot == 1)
-		info->width += 1;
-	if ((info->total = ft_putnbr_count(info->p, "0123456789abcdef")) == 0)
+	if ((info->total = ft_putnbr_count(info->p, "0123456789abcdef")) == 0 && info->dot == 0)
 		info->total = 1;
 	info->fill_blank = info->width - 2 - info->total;
 	if (info->minus == 0)
 		total += print_blank(info->zero, info->fill_blank);
 	ft_putstr("0x", 1);
+	if ((info->fill_prec = info->prec - info->total) > 0)
+		total += print_blank(1, info->fill_prec);
 	if (info->p == 0 && info->dot == 0)
 		ft_putchar('0', 1);
 	else
@@ -570,4 +572,19 @@ int		ft_putstr(char *s, int fd)
 	while (s[i])
 		write(fd, &s[i++], 1);
 	return (i);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	else
+	{
+		while (s1[i] != 0 && s2[i] != 0 && s1[i] == s2[i] && i < n - 1)
+			i++;
+	}
+	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 }
