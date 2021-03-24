@@ -6,7 +6,7 @@
 /*   By: psong <psong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 16:08:49 by psong             #+#    #+#             */
-/*   Updated: 2021/03/17 14:41:54 by psong            ###   ########.fr       */
+/*   Updated: 2021/03/24 17:35:15 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include "./Libft/libft.h"
+
+# define TYPE "cspdiuxX%"
+# define LOWER "0123456789abcdef"
+# define UPPER "0123456789ABCDEF"
 
 typedef struct s_info
 {
@@ -39,16 +44,20 @@ typedef struct s_info
 }				t_info;
 
 int		ft_printf(const char *format, ...);
-int		read_format(va_list ap, char *format);
+int		read_format(va_list ap, char *format, int total, int i);
 void	info_init(t_info *info);
+void	option_init(t_info *info);
 void 	fill_info(va_list ap, t_info *info, char *format, int i);
+void 	fill_info2(va_list ap, t_info *info);
 int		print_by_type(va_list ap, t_info *info, int i, char *format);
 int		c_print_by_info(t_info *info, va_list ap);
 int		d_print_by_info(t_info *info, va_list ap);
 int		u_print_by_info(t_info *info, va_list ap);
 int		s_print_by_info(t_info *info, va_list ap);
+void	s_print_by_info2(t_info *info, va_list ap);
 int		x_print_by_info(t_info *info, va_list ap);
 int		X_print_by_info(t_info *info, va_list ap);
+int		pc_print_by_info(t_info *info);
 void	ft_putnbr_fd(int nb, int fd);
 void	ft_putnbr_b(unsigned int nb);
 int		ft_putchar(char c, int fd);
@@ -62,4 +71,5 @@ void	ft_putnbr_base(long long nbr, char *base);
 int		ft_putnbr_count(long long nbr, char *base);
 int		ft_check_base(char *base);
 int		p_print_by_info(t_info *info, va_list ap);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 #endif
